@@ -1,5 +1,6 @@
 const path = require('path')
 const express = require('express')
+require("dotenv").config();
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const multer = require('multer')
@@ -33,6 +34,7 @@ app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'))
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
@@ -49,12 +51,18 @@ app.use((req, res, next) => {
 app.use('/feed', feedRoute)
 app.use('/auth', authRoute)
 
+// app.use(express.static(path.join(__dirname, 'dist')));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// });
+
 mongoose.connect(
-    `mongodb+srv://${env.MONGO_USER}:${env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${env.MONGO_DATABASE}`
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${process.env.MONGO_DATABASE}`
 )
 .then(result => {
-    app.listen(env.PORT, () => {
-        console.log(`Server running on port ${env.PORT}`);
+    app.listen(process.env.PORT, () => {
+        console.log(`Server running on port ${process.env.PORT}`);
     });
 })
 .catch(err => {

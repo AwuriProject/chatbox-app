@@ -1,4 +1,5 @@
 const express = require('express')
+require("dotenv").config();
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const jwtoken = require('jsonwebtoken')
@@ -29,6 +30,7 @@ exports.getSignUp = async (req, res, next) =>{
 }
 
 exports.getLogin = async (req, res, next) => {
+    // console.log('SECRET_PASSWORD:', process.env.SECRET_PASSWORD)
     const email = req.body.email
     const password = req.body.password
     try {
@@ -48,7 +50,7 @@ exports.getLogin = async (req, res, next) => {
             {
                 email: user.email, 
                 userId: user._id.toString()}, 
-                env.SECRET_PASSWORD, 
+                'suspicious', 
                 {expiresIn: '1h'
             })
         res.status(200).json({
