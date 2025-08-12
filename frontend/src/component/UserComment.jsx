@@ -11,7 +11,7 @@ const UserComment = async (postId, setResult, setError) => {
     }
 
     try {
-        const res = await fetch(`${process.env.VITE_API_URL}/feed/post/${postId}/comment`, {
+        const res = await fetch(`https://my-chat-box.up.railway.app/feed/post/${postId}/comment`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

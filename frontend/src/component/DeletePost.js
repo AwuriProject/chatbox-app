@@ -5,7 +5,7 @@ export const deletePostId = async (postId, setResult, setError) => {
         return;
     }
     try {
-        const res = await fetch(`${process.env.VITE_API_URL}/feed/post/${postId}`, {
+        const res = await fetch(`https://my-chat-box.up.railway.app/feed/post/${postId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`

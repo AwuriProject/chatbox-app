@@ -22,7 +22,7 @@ const Article = ({ refreshTrigger }) => {
         try {
             setLoading(true);
             setError(null);
-            const res = await makeAuthenticatedRequest(`${process.env.VITE_API_URL}/feed/posts`);
+            const res = await makeAuthenticatedRequest(`https://my-chat-box.up.railway.app/feed/posts`);
             
             if(!res) return
 
@@ -168,7 +168,7 @@ const Article = ({ refreshTrigger }) => {
                 formData.append('content', editForm.content);
                 formData.append('image', editForm.imageFile);
                 
-                res = await fetch(`${process.env.VITE_API_URL}/feed/post/${postId}`, {
+                res = await fetch(`https://my-chat-box.up.railway.app/feed/post/${postId}`, {
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -176,7 +176,7 @@ const Article = ({ refreshTrigger }) => {
                     body: formData
                 });
             } else {
-                res = await fetch(`${process.env.VITE_API_URL}/feed/post/${postId}`, {
+                res = await fetch(`https://my-chat-box.up.railway.app/feed/post/${postId}`, {
                     method: 'PUT',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -246,7 +246,7 @@ const Article = ({ refreshTrigger }) => {
                                 <img 
                                     src={
                                         post.creator?.profileImageUrl && post.creator.profileImageUrl !== 'null'
-                                            ? `${process.env.VITE_API_URL}/${post.creator.profileImageUrl}`
+                                            ? `https://my-chat-box.up.railway.app/${post.creator.profileImageUrl}`
                                             : 'images/avatar.png'
                                     }
                                     alt={`${post.creator?.name || 'User'}'s profile`} 
@@ -361,7 +361,7 @@ const Article = ({ refreshTrigger }) => {
                         {editingPostId !== post._id && post.imageUrl && (
                             <div className="px-4 pb-3">
                                 <img 
-                                    src={post.imageUrl.startsWith('http') ? post.imageUrl : `${process.env.VITE_API_URL}/${post.imageUrl}`} 
+                                    src={post.imageUrl.startsWith('http') ? post.imageUrl : `https://my-chat-box.up.railway.app/${post.imageUrl}`} 
                                     alt="Post content" 
                                     className="w-full rounded-lg max-h-96 object-cover"
                                     style={{

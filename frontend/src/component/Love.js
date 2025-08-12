@@ -8,7 +8,7 @@ export const handleLike = async (postId, setResult, setError) => {
     }
     
     try {
-        const res = await makeAuthenticatedRequest(`${process.env.VITE_API_URL}/feed/post/${postId}/like`, {
+        const res = await makeAuthenticatedRequest(`https://my-chat-box.up.railway.app/feed/post/${postId}/like`, {
             method: 'PUT'
         });
         

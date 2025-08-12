@@ -44,7 +44,6 @@ function App() {
     }
 
     const login = async (userLoginData) => {
-        // http://localhost:8000/auth/login
     try {
         const res = await fetch(`https://my-chat-box.up.railway.app/auth/login`, {
             method: 'POST',
@@ -109,9 +108,9 @@ function App() {
             formData.append('content', newPost.content)
             formData.append('image', newPost.image)
             
-            // http://localhost:8000/feed/post
+           
 
-            const url = `${process.env.VITE_API_URL}feed/post`;
+            const url = `https://my-chat-box.up.railway.app/feed/post`;
             const res = await fetch(url, {
                 method: 'POST',
                 body: formData,
