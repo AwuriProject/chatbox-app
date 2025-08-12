@@ -46,7 +46,7 @@ function App() {
     const login = async (userLoginData) => {
         // http://localhost:8000/auth/login
     try {
-        const res = await fetch(`${process.env.VITE_API_URL}/auth/login`, {
+        const res = await fetch(`https://my-chat-box.up.railway.app/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
