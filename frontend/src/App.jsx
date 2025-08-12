@@ -19,9 +19,10 @@ function App() {
     }, []);
 
     const signUp = async (userData) => {
-        console.log('API URL:', process.env.VITE_API_URL)
+        // console.log('API URL:', process.env.VITE_API_URL)
+        console.log(`https://my-chat-box.up.railway.app`)
         try {
-            const res = await fetch(`${process.env.VITE_API_URL}/auth/signup`, {
+            const res = await fetch(`https://my-chat-box.up.railway.app/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
