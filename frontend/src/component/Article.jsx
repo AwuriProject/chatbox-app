@@ -22,7 +22,6 @@ const Article = ({ refreshTrigger }) => {
         try {
             setLoading(true);
             setError(null);
-            // http://localhost:8000/feed/posts
             const res = await makeAuthenticatedRequest(`${process.env.VITE_API_URL}/feed/posts`);
             
             if(!res) return
