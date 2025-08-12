@@ -1,13 +1,13 @@
-[build]
-builder = "nixpacks"
-
-[deploy]
-startCommand = "echo 'Monorepo detected'"
-
 [[services]]
 name = "backend"
-source = "./backend"
+
+[services.source]
+repo = "."
+rootDirectory = "backend"
 
 [[services]]
 name = "frontend"
-source = "./frontend"
+
+[services.source]
+repo = "."
+rootDirectory = "frontend"
