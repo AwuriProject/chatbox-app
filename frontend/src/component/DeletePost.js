@@ -5,7 +5,7 @@ export const deletePostId = async (postId, setResult, setError) => {
         return;
     }
     try {
-        const res = await fetch(`${process.env.REACT_APP_API}/feed/post/${postId}`, {
+        const res = await fetch(`${process.env.VITE_API_URL}/feed/post/${postId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`

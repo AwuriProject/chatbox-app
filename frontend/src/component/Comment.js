@@ -8,7 +8,7 @@ export const handleComment = async (postId, commentText, setResult, setError) =>
     // }
     
     try {
-        const res = await makeAuthenticatedRequest(`${process.env.REACT_APP_API}/feed/post/${postId}/comment`, {
+        const res = await makeAuthenticatedRequest(`${process.env.VITE_API_URL}/feed/post/${postId}/comment`, {
             method: 'POST',
             body: JSON.stringify({
                 text: commentText

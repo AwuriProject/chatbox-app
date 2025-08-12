@@ -19,8 +19,9 @@ function App() {
     }, []);
 
     const signUp = async (userData) => {
+        console.log('API URL:', process.env.VITE_API_URL)
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/signup`, {
+            const res = await fetch(`${process.env.VITE_API_URL}/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,7 +45,7 @@ function App() {
     const login = async (userLoginData) => {
         // http://localhost:8000/auth/login
     try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+        const res = await fetch(`${process.env.VITE_API_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -109,7 +110,7 @@ function App() {
             
             // http://localhost:8000/feed/post
 
-            const url = `${process.env.REACT_APP_API_URL}feed/post`;
+            const url = `${process.env.VITE_API_URL}feed/post`;
             const res = await fetch(url, {
                 method: 'POST',
                 body: formData,
