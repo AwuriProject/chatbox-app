@@ -54,16 +54,12 @@ app.use((req, res, next) => {
 app.use('/feed', feedRoute)
 app.use('/auth', authRoute)
 
-// app.use(express.static(path.join(__dirname, 'dist')));
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-// });
 const PORT = process.env.PORT || 3000;
 
-const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
-
-mongoose.connect(MONGODB_URI,
+// const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
+console.log('MongoDB URI exists:', !!process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI,
     {
         serverSelectionTimeoutMS: 5000, 
         socketTimeoutMS: 45000, 
