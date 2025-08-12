@@ -63,10 +63,10 @@ const PORT = process.env.PORT || 3000;
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
 
-mongoose.connect(MONGODB_URI, 
+mongoose.connect(MONGODB_URI,
     {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 5000, 
+        socketTimeoutMS: 45000, 
     }
 )
 .then(result => {
