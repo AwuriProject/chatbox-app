@@ -21,7 +21,7 @@ function App() {
     const signUp = async (userData) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/signup`, {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
