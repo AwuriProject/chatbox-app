@@ -35,13 +35,16 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://zippy-wisdom-production.up.railway.app');
+     console.log('CORS middleware hit for:', req.url);
+    // res.header('Access-Control-Allow-Origin', 'https://zippy-wisdom-production.up.railway.app');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
     
     
     if (req.method === 'OPTIONS') {
+        console.log('Handling OPTIONS preflight request');
         res.sendStatus(200);
     } else {
         next();
