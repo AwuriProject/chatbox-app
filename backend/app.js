@@ -56,15 +56,31 @@ app.use('/auth', authRoute)
 // app.get('*', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 // });
+const PORT = process.env.PORT || 3000;
 
-mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${process.env.MONGO_DATABASE}`
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.8f1jhtr.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
+
+mongoose.connect(MONGODB_URI, 
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
 )
 .then(result => {
-    app.listen(process.env.PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
         console.log(`Server running on port ${process.env.PORT}`);
     });
 })
 .catch(err => {
     console.log('MongoDB not connected', err)
 })
+
+
+// Handle MongoDB connection events
+mongoose.connection.on('error', (err) => {
+    console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('MongoDB disconnected');
+});
