@@ -39,7 +39,7 @@ function App() {
                 throw new Error(`Signup Failed with status ${res.status}`)
             }
             const data = await res.json()
-            console.log(data.errors)
+            console.log(data)
             if(!res.ok){
                 if(data.errors){
                     const errorObj = {}
