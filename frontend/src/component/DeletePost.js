@@ -1,4 +1,3 @@
-import { post } from "../../../backend/routes/feed";
 
 export const deletePostId = async (postId, setResult, setError) => {
     console.log(postId)
@@ -23,8 +22,10 @@ export const deletePostId = async (postId, setResult, setError) => {
         if (typeof setResult === 'function') {
             setResult(prevPosts => {
                 if (Array.isArray(prevPosts)) {
-                    // console.log(post => post._id, postId)
-                    return prevPosts.filter(post => post._id !== postId);
+                    return prevPosts.filter(post => {
+                        console.log(post, post._id, postId)
+                        post._id !== postId
+                    });
                 }
                 return prevPosts;
             });
