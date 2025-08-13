@@ -1,3 +1,5 @@
+import { post } from "../../../backend/routes/feed";
+
 export const deletePostId = async (postId, setResult, setError) => {
     console.log(postId)
     const token = localStorage.getItem('token');
@@ -21,6 +23,7 @@ export const deletePostId = async (postId, setResult, setError) => {
         if (typeof setResult === 'function') {
             setResult(prevPosts => {
                 if (Array.isArray(prevPosts)) {
+                    console.log(post => post._id, postId)
                     return prevPosts.filter(post => post._id !== postId);
                 }
                 return prevPosts;
