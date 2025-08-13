@@ -1,4 +1,5 @@
 export const deletePostId = async (postId, setResult, setError) => {
+    console.log(postId)
     const token = localStorage.getItem('token');
     if (!token) {
         setError('No authentication token found');
@@ -17,10 +18,8 @@ export const deletePostId = async (postId, setResult, setError) => {
         const data = await res.json()
         console.log(data.message)
         
-        // Check if setResult is a function before calling it
         if (typeof setResult === 'function') {
             setResult(prevPosts => {
-                // Also check if prevPosts is an array
                 if (Array.isArray(prevPosts)) {
                     return prevPosts.filter(post => post._id !== postId);
                 }

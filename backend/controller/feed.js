@@ -169,17 +169,15 @@ exports.deletePost = async (req, res, next) => {
         
         const post = await Post.findById(postId);
         
-        // Check if post exists
         if (!post) {
             const error = new Error('Could not find a post');
             error.statusCode = 404;
             throw error;
         }
         
-        // Store imageUrl before deleting
-        const imageUrl = post.imageUrl;
         
-        // Delete the post (with await)
+        const imageUrl = post.imageUrl;
+
         await Post.findByIdAndDelete(postId);
         
         // Clear the image file if it exists
