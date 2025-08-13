@@ -1,4 +1,5 @@
 const express = require('express')
+const { validationResult } = require('express-validator/check')
 require("dotenv").config();
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
@@ -9,6 +10,14 @@ exports.getSignUp = async (req, res, next) =>{
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
+    const errors = validationResult(req)
+    console.log(errors.array())
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            message: 'Validation failed, entered data is incorrect!', 
+            errors: errors.array()
+        });
+    }
     try {
         const result = await bcrypt.hash(password, 12)
         const user = new User({
@@ -30,7 +39,6 @@ exports.getSignUp = async (req, res, next) =>{
 }
 
 exports.getLogin = async (req, res, next) => {
-    // console.log('SECRET_PASSWORD:', process.env.SECRET_PASSWORD)
     const email = req.body.email
     const password = req.body.password
     try {
