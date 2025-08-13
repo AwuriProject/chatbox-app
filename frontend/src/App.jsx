@@ -42,6 +42,7 @@ function App() {
             console.log(data)
             if(!res.ok){
                 if(data.errors){
+                    console.log(data.errors)
                     const errorObj = {}
                     data.errors.forEach(error =>{
                         errorObj[error.path] = error.msg
