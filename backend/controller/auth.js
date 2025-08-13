@@ -15,7 +15,7 @@ exports.getSignUp = async (req, res, next) =>{
     if (!errors.isEmpty()) {
         return res.status(422).json({
             message: 'Validation failed, entered data is incorrect!', 
-            errorMessage: errors.array().msg
+            errorMessage: errors.array()[0]
         });
     }
     res.json({ success: true, message: 'User created successfully' });
