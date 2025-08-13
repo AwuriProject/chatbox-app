@@ -9,6 +9,8 @@ function App() {
     const [isAuth, setIsAuth] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     
     // Check if user is already logged in when app loads
     useEffect(() => {
@@ -19,8 +21,8 @@ function App() {
     }, []);
 
     const signUp = async (userData) => {
-        // console.log('API URL:', process.env.VITE_API_URL)
-        console.log(`https://my-chat-box.up.railway.app`)
+        setIsLoading(true);
+        setErrors({})
         try {
             const res = await fetch(`https://my-chat-box.up.railway.app/auth/signup`, {
                 method: 'POST',
@@ -37,9 +39,24 @@ function App() {
                 throw new Error(`Signup Failed with status ${res.status}`)
             }
             const data = await res.json()
+            if(!res.ok){
+                if(data.errors){
+                    const errorObj = {}
+                    data.errors.forEach(error =>{
+                        errorObj[error.path] = error.msg
+                    })
+                    setErrors(errorObj)
+                    return;
+                }else{
+                    throw new Error(`Signup Failed with status ${res.status}`)
+                }
+            }
             navigate('/login')
         } catch (error) {
             console.log('Signup error:', error)
+            setErrors({general: 'Signup failed. Please try again.'})
+        }finally{
+            setIsLoading(false)
         }
     }
 
@@ -156,7 +173,7 @@ function App() {
             <main className='max-w-2xl mx-auto px-4 py-8'>
                 <Routes>
                     <Route path='/login' element={<Login onLogin={login}/>}/>
-                    <Route path='/signup' element={<Signup onSignUp={signUp}/>}/>
+                    <Route path='/signup' element={<Signup onSignUp={signUp} errors={errors} isLoading={isLoading}/>}/>
                     <Route
                         path='/feed'
                         element ={

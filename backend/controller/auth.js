@@ -11,13 +11,14 @@ exports.getSignUp = async (req, res, next) =>{
     const password = req.body.password;
     const name = req.body.name;
     const errors = validationResult(req)
-    console.log(errors.array())
+
     if (!errors.isEmpty()) {
         return res.status(422).json({
             message: 'Validation failed, entered data is incorrect!', 
-            errors: errors.array()
+            errorMessage: errors.array()
         });
     }
+    res.json({ success: true, message: 'User created successfully' });
     try {
         const result = await bcrypt.hash(password, 12)
         const user = new User({
