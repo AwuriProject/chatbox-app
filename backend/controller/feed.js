@@ -112,6 +112,7 @@ exports.getPost = async (req, res, next) => {
 
 exports.updatePost = async (req, res, next) => {
     const postId = req.params.postId;
+    const userId = req.userId;
     const errors = validationResult(req);
     
     if (!errors.isEmpty()) {
@@ -132,7 +133,11 @@ exports.updatePost = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-
+        if (post.creator.toString() !== userId.toString()) {
+            return res.status(403).json({ 
+                message: 'Not authorized to delete this post' 
+            });
+        }
         let imageUrl = post.imageUrl;
 
         if (req.file) {
@@ -164,6 +169,7 @@ exports.updatePost = async (req, res, next) => {
 
 exports.deletePost = async (req, res, next) => {
     const postId = req.params.postId;
+    const userId = req.userId;
     
     try {
         
@@ -175,7 +181,11 @@ exports.deletePost = async (req, res, next) => {
             throw error;
         }
         
-        
+        if (post.creator.toString() !== userId.toString()) {
+            return res.status(403).json({ 
+                message: 'Not authorized to delete this post' 
+            });
+        }
         const imageUrl = post.imageUrl;
 
         await Post.findByIdAndDelete(postId);
