@@ -15,11 +15,20 @@ exports.getSignUp = async (req, res, next) =>{
     if (!errors.isEmpty()) {
         return res.status(422).json({
             message: 'Validation failed, entered data is incorrect!', 
-            errorMessage: errors.array()[0]
+            errorMessage: errors.array()
         });
     }
-    res.json({ success: true, message: 'User created successfully' });
     try {
+        const existingUser = await User.findOne({email: email})
+        if(existingUser){
+            return res.status(409).json({
+                message: 'Validation failed, entered data is incorrect!',
+                errorMessage: [{
+                    path: 'email',
+                    msg: 'User already exists with this email'
+                }]
+            })
+        }
         const result = await bcrypt.hash(password, 12)
         const user = new User({
             email: email,
@@ -35,7 +44,7 @@ exports.getSignUp = async (req, res, next) =>{
         if(!error.statusCode){
             error.statusCode = 500
         }
-        next()
+        next(error)
     }  
 }
 

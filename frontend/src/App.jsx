@@ -20,47 +20,72 @@ function App() {
         }
     }, []);
 
-    const signUp = async (userData) => {
-        setIsLoading(true);
-        setErrors({})
-        try {
-            const res = await fetch(`https://my-chat-box.up.railway.app/auth/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: userData.email,
-                    password: userData.password,
-                    name: userData.name
-                })
+   const signUp = async (userData) => {
+    setIsLoading(true);
+    setErrors({}); // Clear all errors at start
+    
+    try {
+        const res = await fetch(`https://my-chat-box.up.railway.app/auth/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: userData.email.trim(),
+                password: userData.password,
+                name: userData.name.trim()
             })
-            if(!res.ok){
-                throw new Error(`Signup Failed with status ${res.status}`)
+        });
+        
+        const data = await res.json();
+        console.log('Response data:', data);
+        
+        if (!res.ok) {
+            if (data.errorMessage && Array.isArray(data.errorMessage)) {
+                const errorObj = {};
+                data.errorMessage.forEach(error => {
+                    errorObj[error.path || error.param] = error.msg;
+                });
+                setErrors(errorObj);
+                throw new Error('Validation failed');
             }
-            const data = await res.json()
-            console.log(data)
-            if(!res.ok){
-                if(data.errors){
-                    console.log(data.errors)
-                    const errorObj = {}
-                    data.errors.forEach(error =>{
-                        errorObj[error.path] = error.msg
-                    })
-                    setErrors(errorObj)
-                    return;
-                }else{
-                    throw new Error(`Signup Failed with status ${res.status}`)
-                }
+            else if (data.errors && Array.isArray(data.errors)) {
+                const errorObj = {};
+                data.errors.forEach(error => {
+                    errorObj[error.path || error.param] = error.msg;
+                });
+                setErrors(errorObj);
+                throw new Error('Validation failed');
             }
-            navigate('/login')
-        } catch (error) {
-            console.log('Signup error:', error)
-            setErrors({general: 'Signup failed. Please try again.'})
-        }finally{
-            setIsLoading(false)
+            else if (data.message) {
+                throw new Error(data.message);
+            }
+            else {
+                throw new Error(`Signup Failed with status ${res.status}`);
+            }
         }
+        
+        // SUCCESS - Clear everything and navigate
+        setErrors({});
+        // The form will be reset by navigation to login page
+        navigate('/login');
+        
+    } catch (error) {
+        console.log('Signup error:', error);
+        // Don't reset form on error - let user fix their input
+    } finally {
+        setIsLoading(false);
     }
+};
+
+// Function to clear specific field errors
+const clearFieldError = (fieldName) => {
+    setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[fieldName];
+        return newErrors;
+    });
+};
 
     const login = async (userLoginData) => {
     try {
@@ -175,7 +200,7 @@ function App() {
             <main className='max-w-2xl mx-auto px-4 py-8'>
                 <Routes>
                     <Route path='/login' element={<Login onLogin={login}/>}/>
-                    <Route path='/signup' element={<Signup onSignUp={signUp} errors={errors} isLoading={isLoading}/>}/>
+                    <Route path='/signup' element={<Signup onSignUp={signUp} errors={errors} isLoading={isLoading} onClearError={clearFieldError}/>}/>
                     <Route
                         path='/feed'
                         element ={
