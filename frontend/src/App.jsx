@@ -20,7 +20,7 @@ function App() {
         }
     }, []);
 
-   const signUp = async (userData) => {
+const signUp = async (userData) => {
     setIsLoading(true);
     setErrors({}); // Clear all errors at start
     
@@ -39,6 +39,21 @@ function App() {
         
         const data = await res.json();
         console.log('Response data:', data);
+
+        // Handle redirect case (user already exists)
+        if (data.redirect && data.redirectTo) {
+            // Show success message briefly before redirect
+            alert(data.message || 'Redirecting to login...');
+            
+            // Navigate to login with email pre-filled
+            navigate('/login', { 
+                state: { 
+                    email: data.email,
+                    message: data.message 
+                }
+            });
+            return;
+        }
         
         if (!res.ok) {
             if (data.errorMessage && Array.isArray(data.errorMessage)) {

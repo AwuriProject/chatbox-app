@@ -29,15 +29,16 @@ const Signup = ({onSignUp, errors = {}, isLoading = false, onClearError}) => {
         }
     }
 
+    
     // Function to reset form (call this from parent after successful signup)
-    const resetForm = () => {
-        setSignupUser({name: '', email: '', password: ''});
-    }
+    // const resetForm = () => {
+    //     setSignupUser({name: '', email: '', password: ''});
+    // }
 
     // Expose resetForm to parent component
-    React.useImperativeHandle(onSignUp.ref, () => ({
-        resetForm
-    }));
+    // React.useImperativeHandle(onSignUp.ref, () => ({
+    //     resetForm
+    // }));
 
     return (
         <div>

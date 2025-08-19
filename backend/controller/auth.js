@@ -7,9 +7,7 @@ const jwtoken = require('jsonwebtoken')
 
 
 exports.getSignUp = async (req, res, next) =>{
-    const email = req.body.email;
-    const password = req.body.password;
-    const name = req.body.name;
+    const { email, password, name } = req.body
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -19,15 +17,14 @@ exports.getSignUp = async (req, res, next) =>{
         });
     }
     try {
-        const existingUser = await User.findOne({email: email})
+        const existingUser = await User.findOne({email: email});
         if(existingUser){
-            return res.status(409).json({
-                message: 'Validation failed, entered data is incorrect!',
-                errorMessage: [{
-                    path: 'email',
-                    msg: 'User already exists with this email'
-                }]
-            })
+            return res.status(200).json({
+                redirect: true,
+                redirectTo: '/login',
+                message: 'User already exists. Please log in with your existing account.',
+                email: email // Pass email to pre-fill login form
+            });
         }
         const result = await bcrypt.hash(password, 12)
         const user = new User({
