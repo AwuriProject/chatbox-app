@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 const Login = ({onLogin}) => {
@@ -8,7 +8,6 @@ const Login = ({onLogin}) => {
     const [message, setMessage] = useState()
 
     useEffect(() => {
-        // Set message from navigation state
         if (location.state?.message) {
             setMessage(location.state.message);
             
